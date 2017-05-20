@@ -3,21 +3,16 @@ public class OrderlyExecution {
 
 	public static void main(String[] args) {
 
-		OrderlyExecution order = new OrderlyExecution();
+		OrderlyExecution order = new OrderlyExecution(); //Using the 'order' object for locking 
 
-		Thread even = new Thread(order.new Even(order));
-		Thread odd = new Thread(order.new Odd(order));
+		Thread even = new Thread(order.new Even(order)); //Create Even number printing thread
+		Thread odd = new Thread(order.new Odd(order));   //Create Odd number printing thread
 
 		even.start();
 		odd.start();
 
-	}
+	}	
 	
-
-	class Lock {
-
-	}
-
 	class Even implements Runnable {
 
 		final OrderlyExecution lock;
@@ -29,10 +24,13 @@ public class OrderlyExecution {
 		public void run() {
 
 			for (int j = 0; j < 20; j = j + 2) {
-				synchronized (lock) {
+				
+				synchronized (lock) {					
 					System.out.printf("%d ", j);
+					
+					//Notify order thread and wait during each iteration
 					try {
-						lock.notify();
+						lock.notify(); 
 						lock.wait();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
@@ -61,6 +59,7 @@ public class OrderlyExecution {
 				synchronized (lock) {
 					System.out.printf("%d ", j);
 					try {
+						//Notify order thread and wait during each iteration
 						lock.notify();
 						lock.wait();
 					} catch (InterruptedException e) {
