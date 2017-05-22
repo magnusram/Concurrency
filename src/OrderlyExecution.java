@@ -1,4 +1,11 @@
-
+/*
+ * Synchronize thread execution of Even and Odd thread 
+ * in such a way that the numbers are printed in sequence
+ * 0 1 2 3 4 ....
+ * 
+ * Even thread prints Even numbers 
+ * Odd thread prints Odd numbers
+ */
 public class OrderlyExecution {
 
 	public static void main(String[] args) {
@@ -37,7 +44,9 @@ public class OrderlyExecution {
 					}
 				} // synchronization block ends
 			} // loop ends
-
+			synchronized (lock){
+				lock.notify();
+			}
 		}
 
 	}
@@ -66,7 +75,7 @@ public class OrderlyExecution {
 						e.printStackTrace();
 					}
 				} // synchronization block ends
-			} // loop ends
+			} // loop ends			
 		}
 
 	}
